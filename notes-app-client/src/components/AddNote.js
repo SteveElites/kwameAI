@@ -27,7 +27,7 @@ const AddNote = ({handleAddNote}) => {
     }
 
   return (
-    <div className="note" >
+    <div className="note new" >
       <textarea rows="1" cols="" onChange={handletitle} placeholder="title goes here" value={noteTitle}></textarea>
       <textarea rows="5" cols="" onChange={handleChange} placeholder="add your text here ..." value={noteText} ></textarea>
       {/* <div id="error-message">
