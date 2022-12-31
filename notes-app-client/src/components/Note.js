@@ -3,71 +3,60 @@ import React, { useState, useEffect } from 'react';
 const Note = ({ note, onEdit, handleDeleteNote }) => {
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(note.title);
+  const [id, setId] = useState('');
   const [text, setText] = useState(note.text);
   const [titleError, setTitleError] = useState(null);
-//   const updatedDate = ""
-//   const [notes, SetNotes] = useState([]);
 
 
 
 
 
-
+// handleEditClick sets the state:: whether or not Editing
   const handleEditClick = () => {
-    // Check if the new title is already being used by another note
-    // const existingNote = notes.find(n => n.title === title);
-    // if (existingNote) {
-    //   setTitleError('This title is already being used by another note.');
-    //   return;
-    // }
-//   const updatedDate = new Date()
-    
     setEditing(true);
-
+    setId(note.note_id);
 
   };
 
   const handleSaveClick = async(e) => {
     e.preventDefault();
 
+    // CHECKS FOR UNIQUE  TITLE WHEN IN EDIT MODE
+
     const t_response = await fetch("http://localhost:5000");
-        const existingNotes = await t_response.json();
+    const existingNotes = await t_response.json();
 
-        const isTitleUnique = !existingNotes.find(note => note.title === title);
-        if (!isTitleUnique) {
-        // Display an error message if the title is not unique
-            alert("title must be unique")
-        } else {
-              try {
-                    // const body = { id, note_id, title, text, date, updated };
-                    const response = await fetch(`http://localhost:5000/${note.note_id}`, 
-                    {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json"},
-                        body: JSON.stringify({
-                          note_id: note.note_id,
-                          title: title,
-                          text: text,
-                          date: note.date,
-                          updated: updatedDate.toISOString().substring(0, 10)
-                        })
-                    })
+    const isTitleUnique = !existingNotes.find(note => note.title === title && note.note_id !== id);
+    if (!isTitleUnique) {
+      // Display an error message if the title is not unique
+      alert("title must be unique")
+    } else {
+          // UPDATE THE DATABASE
+          try {
+            // const body = { id, note_id, title, text, date, updated };
+            const response = await fetch(`http://localhost:5000/${note.note_id}`, 
+            {
+                method: "PUT",
+                headers: { "Content-Type": "application/json"},
+                body: JSON.stringify({
+                  note_id: note.note_id,
+                  title: title,
+                  text: text,
+                  date: note.date,
+                  updated: updatedDate.toISOString().substring(0, 10)
+                })
+            })
 
-                    window.location.reload(true);
-                    console.log(response)
-                  } catch (err) {
-                    console.error(err.message)
-                  }
+            window.location.reload(true);
+            console.log(response)
+          } catch (err) {
+            console.error(err.message)
+          }
 
-                  const updatedNote = { ...note, title, text, updated: Date.now() };
-                  onEdit(updatedNote);
-                  setEditing(false);
-
-
-        }
-
-    
-
+          const updatedNote = { ...note, title, text, updated: Date.now() };
+          onEdit(updatedNote);
+          setEditing(false);
+      }
   };
   
   useEffect(() => {
@@ -79,6 +68,8 @@ const Note = ({ note, onEdit, handleDeleteNote }) => {
     }
   }, [titleError]);
   
+
+  // RESTRUCTURE THE DATE OBJECT STRUCTURE TO MMM DD, YYYY
   const createdDate = new Date(note.date);
   const formattedCreatedDate = createdDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
   const updatedDate = new Date();
@@ -89,6 +80,8 @@ const Note = ({ note, onEdit, handleDeleteNote }) => {
 
 
   return (
+
+    //EDIT MODE OF NOTE AND THE DISPLAY NOTE MODE
     <div className="note">
       {editing ? (
         <>  

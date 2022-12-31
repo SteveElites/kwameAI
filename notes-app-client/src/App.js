@@ -1,12 +1,15 @@
 import { useState } from "react"
 import NoteList from "./components/NoteList"
 import {nanoid} from "nanoid" 
-// import EditNote from "./components/EditNote"
 
 const App = () => {
+
+  // CREATE AN ARRAY TO SAVE NOTES USING USESTATE
   const [notes, SetNotes] = useState([]);
   
-  const AddNote = (title, text) => {
+
+  // CREATES A NEW NOTES :: title is made to store both title and text
+  const AddNote = (title) => {
     // console.log(text);
     const date = new Date();
     const newNote = {
@@ -16,17 +19,11 @@ const App = () => {
       date: date.toLocaleDateString(),
     
     }
+    console.log(newNote)
     
-    const existingNote = notes.find((note) => note.title === title.noteTitle);
-    if (existingNote) {
-      alert('title must be unique')
-    } else {
-      const newNotes = [...notes, newNote];
-      SetNotes(newNotes);
-    // console.log(title.noteText);
-
-    }
   }
+
+  // DELETES A NOTE FROM DATABASE AND RELOADS
 
   const deleteNote = async (id) => {
     try {
@@ -35,14 +32,11 @@ const App = () => {
       })
 
       console.log(deleteNote);
-      // SetNotes(notes.filter(note => note.id !== id));
       window.location.reload(true);
     } catch (err) {
       console.log(err.message)
     }
 
-    // const newNotes = notes.filter((note)=> note.id !==id);
-    // SetNotes(newNotes)
   }
 
 

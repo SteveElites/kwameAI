@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import AddNote from "./AddNote"
 import Note from "./Note";
-// import Note from "./Note"
-
-// import EditNote from "./EditNote"
 
 const NoteList = ({ notes, handleAddNote, handleDeleteNote, handleEditNote }) => {
   
@@ -25,17 +22,10 @@ const NoteList = ({ notes, handleAddNote, handleDeleteNote, handleEditNote }) =>
 
   // console.log(list)
   return (
-    <div className="notes-list">  
-        {/* {notes.map((note)=> 
-            <Note id={note.id} title={note.title} text={note.text} 
-                date= {note.date}
-                note={note}
-                notes = {notes}
-                handleDeleteNote= {handleDeleteNote}
-                onEdit={handleEditNote}
-                
-                />  
-        )} */}
+
+    // LISTS ALL NOTES FROM THE DATABASE
+    <div className="notes-list">
+      
         {list.map((note) => (
         <Note key={note.id}
           id={note.id} title={note.title} text={note.text} 

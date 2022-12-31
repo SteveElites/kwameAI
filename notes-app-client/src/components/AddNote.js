@@ -9,16 +9,15 @@ const AddNote = ({handleAddNote}) => {
     const [titleError, setTitleError] = useState(null);
     const [textError, setTextError] = useState(null);
     
-
-
-
-
+    // TAKES IN THE VALUES OF WHAT IS TYPED TO ADD NEW NOTE
     const handleChange = (event) => {
         setNoteText(event.target.value)
     }
     const handletitle = (event) => {
         setNoteTitle(event.target.value)
     }
+
+    // THROWS ERROR ON EMPTY TITLE AND OR NOTE BODY
     const handleSaveClick = (e) => {
 
         if ( noteTitle.trim().length === 0){
@@ -45,6 +44,8 @@ const AddNote = ({handleAddNote}) => {
         }
         
     }
+
+    // CSS + JAVASCRIPT ANIMATION FOR ERROR: Shakes error and disappear after 2s
     useEffect(() => {
         if (titleError) {
           // Remove the shake animation from the error message after 2 seconds
@@ -81,7 +82,6 @@ const AddNote = ({handleAddNote}) => {
             alert("title must be unique")
         } else {
 
-
             try {
             // console.log(noteText, noteTitle);
             const response = await fetch("http://localhost:5000", 
@@ -115,17 +115,15 @@ const AddNote = ({handleAddNote}) => {
 
 
   return (
+
+    // DISPLAYS THE ADDNOTE COMPONENT: Slot for adding new notes display
     <div className="note new" >
        
-            <textarea rows="1" cols="" onChange={handletitle} placeholder="title goes here" value={noteTitle}></textarea>
+        <textarea rows="1" cols="" onChange={handletitle} placeholder="title goes here" value={noteTitle}></textarea>
         {titleError && <div className="error"> <small >{titleError}</small></div>}
 
         <textarea rows="5" cols="" onChange={handleChange} placeholder="add your text here ..." value={noteText} ></textarea>
         {textError && <div className="error"> <small >{textError}</small></div>}
-
-        {/* <div id="error-message">
-            
-        </div> */}
 
         <div className="note-footer">
             <small></small>
