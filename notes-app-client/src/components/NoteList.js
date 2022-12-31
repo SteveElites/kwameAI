@@ -49,7 +49,7 @@ const NoteList = ({ notes, handleAddNote, handleDeleteNote, handleEditNote }) =>
         )
           
         
-        )};
+        )}
         <AddNote handleAddNote={handleAddNote} />
     </div>
   )
