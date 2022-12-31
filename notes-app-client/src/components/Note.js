@@ -1,95 +1,72 @@
-import React, { useState } from 'react';
-
-const Note = ({ note, notes, onEdit, handleDeleteNote }) => {
-  const [editing, setEditing] = useState(false);
-  const [title, setTitle] = useState(note.title);
-  const [text, setText] = useState(note.text);
-  const [titleError, setTitleError] = useState(null);
-//   const updatedDate = ""
-//   const [notes, SetNotes] = useState([]);
 
 
+// const Note = ({id, title, text, date, handleDeleteNote, onEdit }) => {
+//     const handleEditClick = () => {
+//         onEdit({id: id, updatedNote: {title: 'New title', text: 'New text'}});
+//       };
 
-  const handleEditClick = () => {
-    // Check if the new title is already being used by another note
-    // const existingNote = notes.find(n => n.title === title);
-    // if (existingNote) {
-    //   setTitleError('This title is already being used by another note.');
-    //   return;
-    // }
-//   const updatedDate = new Date()
-    
-    setEditing(true);
-
-
-  };
-
-  const handleSaveClick = () => {
-   
-    const isTitleUnique = notes.every(otherNote => otherNote.title !== title);
-    if (!isTitleUnique) {
-      setTitleError('Title must be unique');
-      return;
-    }
-
-    // Update the note
-    // const updatedNote = { id: note.id, title, text, date: note.date };
-    // onEdit(updatedNote);
-    // setEditing(false);
-
-    const updatedNote = { ...note, title, text, updated: Date.now() };
-    onEdit(updatedNote);
-    setEditing(false);
-
-  };
-  const createdDate = new Date(note.date);
-  const formattedCreatedDate = createdDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-  const updatedDate = new Date(note.updated);
-  const formattedUpdatedDate = updatedDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+//   return (
+//     <div className="note">
+//         <button className="btn" onClick={handleEditClick} >Edit</button>
+//         <h3> {title}</h3>
+//         <span> {text} </span>
+//         <div className="note-footer" >
+//             <small>{date}</small>
+//             <button className="btn" onClick={ ()=> handleDeleteNote(id) }>x</button>
+//         </div>
+//   </div>
+//   )
+// }
 
 
 
-  return (
-    <div className="note">
-      {editing ? (
-        <>
-          <input
-            type="text"
-            value={title}
-            onChange={event => setTitle(event.target.value)}
-          />
-          <textarea
-            rows="8"
-            cols="10"
-            onChange={event => setText(event.target.value)}
-            value={text}
-          ></textarea>
-          {titleError && <div className="error">{titleError}</div>}
-          <div className="note-footer">
-            {/* <small>Created: {note.date}</small> */}
-            {/* <small>Updated: { updatedDate.toLocaleDateString() } </small> */}
-            <small>Created: {formattedCreatedDate}</small>
-            {note.updated && <small>Updated: {formattedUpdatedDate}</small>}
+// export default Note
 
 
-            <button onClick={handleSaveClick} className="save btn">
-              Save
-            </button>
+import { useState } from "react";
+
+const Note = ({ note, handleDeleteNote }) => {
+    const [editing, setEditing] = useState(false);
+    const [title, setTitle] = useState(note.title);
+    const [text, setText] = useState(note.text);
+  
+    const handleEditClick = () => {
+      setEditing(true);
+    };
+  
+    const handleSaveClick = () => {
+      // Save the edited note to the database
+      setEditing(false);
+    };
+  
+    const handleTitleChange = event => {
+      setTitle(event.target.value);
+    };
+  
+    const handleTextChange = event => {
+      setText(event.target.value);
+    };
+  
+    return (
+      <div>
+        {editing ? (
+          <div className="note">
+            <input type="text" value={title} onChange={handleTitleChange} />
+            <textarea value={text} onChange={handleTextChange} />
+            <button className="btn" onClick={handleSaveClick}>Done</button>
           </div>
-        </>
-      ) : (
-        <>
-            <button className='btn' onClick={handleEditClick} >Edit</button>
-          <div className="title">{title}</div>
-          <div className="text">{text}</div>
-          <div className="note-footer">
-            <small>Created: {formattedCreatedDate}</small>
-            {note.updated && <small>Updated: {formattedUpdatedDate}</small>}
-             
+        ) : (
+          <div className="note">
+            <h3>{title}</h3>
+            <p>{text}</p>
+            <button className="btn" onClick={handleEditClick}>Edit</button>
+            
+         <div className="note-footer" >
+             <small>{note.date}</small>
             <button className="btn" onClick={ ()=> handleDeleteNote(note.id) }>x</button>
              </div>
 
-          </>
+          </div>
         )}
       </div>
     );
