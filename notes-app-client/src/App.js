@@ -4,20 +4,7 @@ import {nanoid} from "nanoid"
 // import EditNote from "./components/EditNote"
 
 const App = () => {
-  const [notes, SetNotes] = useState([
-    // {
-    //   id: nanoid(),
-    //   title: "some title",
-    //   text: "here is some body",
-    //   date: "15/12/2020"
-    // },
-    // {
-    //   id: nanoid(),
-    //   title: "titled",
-    //   text: "here is some body",
-    //   date: "15/12/2020"
-    // },
-  ]);
+  const [notes, SetNotes] = useState([]);
   
   const AddNote = (title, text) => {
     // console.log(text);
@@ -41,10 +28,24 @@ const App = () => {
     }
   }
 
-  const deleteNote = (id) => {
-    const newNotes = notes.filter((note)=> note.id !==id);
-    SetNotes(newNotes)
+  const deleteNote = async (id) => {
+    try {
+      const deleteNote= await fetch(`http://localhost:5000/${id}`, {
+        method:"DELETE"
+      })
+
+      console.log(deleteNote);
+      // SetNotes(notes.filter(note => note.id !== id));
+      window.location.reload(true);
+    } catch (err) {
+      console.log(err.message)
+    }
+
+    // const newNotes = notes.filter((note)=> note.id !==id);
+    // SetNotes(newNotes)
   }
+
+
 
 
   const handleEditNote = (updatedNote) => {
@@ -59,11 +60,14 @@ const App = () => {
 
   return (
     <div className="container">
+      <h2 className="main-head"> <span>Simple & Quick</span> React Web App</h2>
       <NoteList notes={notes} 
       handleAddNote={AddNote}
       handleDeleteNote={deleteNote}
       handleEditNote = {handleEditNote}
        />
+
+      <small className="main-footer">&copy; Stephen Asiedu Maranatha ( <a target="_blank" rel="noopener noreferrer" href="https://steveelites.github.io">See Portfolio</a> ), December 2022</small>
     </div>
   )
 }
