@@ -47,6 +47,7 @@ body {
 }
 
 .note {
+  position: relative;
   background-color: yellowgreen;
   margin-bottom: 20px;
   padding: 1rem;
@@ -71,6 +72,7 @@ body {
 }
 .note.new {
   background-color: rgb(49, 184, 184);
+  position: relative;
 }
 .save.btn {
   background-color: green;
@@ -112,3 +114,14 @@ textarea {
   bottom: 10px;
   text-align: center;
 }
+/* #error-message{
+  background-color: red;
+  font-size: small;
+  color: white;
+  padding: 5px;
+  position: absolute;
+  bottom: 35px;
+  width: 60%;
+  height: 30px;
+
+} */
