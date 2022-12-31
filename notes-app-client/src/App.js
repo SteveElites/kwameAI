@@ -5,18 +5,18 @@ import {nanoid} from "nanoid"
 
 const App = () => {
   const [notes, SetNotes] = useState([
-    {
-      id: nanoid(),
-      title: "some title",
-      text: "here is some body",
-      date: "15/12/2020"
-    },
-    {
-      id: nanoid(),
-      title: "titled",
-      text: "here is some body",
-      date: "15/12/2020"
-    },
+    // {
+    //   id: nanoid(),
+    //   title: "some title",
+    //   text: "here is some body",
+    //   date: "15/12/2020"
+    // },
+    // {
+    //   id: nanoid(),
+    //   title: "titled",
+    //   text: "here is some body",
+    //   date: "15/12/2020"
+    // },
   ]);
   
   const AddNote = (title, text) => {
@@ -29,6 +29,7 @@ const App = () => {
       date: date.toLocaleDateString(),
     
     }
+    
     const existingNote = notes.find((note) => note.title === title.noteTitle);
     if (existingNote) {
       alert('title must be unique')
@@ -45,15 +46,11 @@ const App = () => {
     SetNotes(newNotes)
   }
 
-  const handleEditNote = ({updatedNote}) => {
-    console.log("clicked me")
-    const updatedNotes = notes.map(note => {
-      if (note.id === updatedNote.id) {
-        return updatedNote;
-      }
-      return note;
-    });
-    SetNotes(updatedNotes);
+
+  const handleEditNote = (updatedNote) => {
+    const newNotes = notes.filter(note => note.id !== updatedNote.id);
+    // Add the new version of the note to the array
+    SetNotes([...newNotes, updatedNote]);
   };
 
 
@@ -65,7 +62,8 @@ const App = () => {
       <NoteList notes={notes} 
       handleAddNote={AddNote}
       handleDeleteNote={deleteNote}
-      onEdit = {handleEditNote} />
+      handleEditNote = {handleEditNote}
+       />
     </div>
   )
 }

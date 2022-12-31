@@ -15,6 +15,8 @@ const AddNote = ({handleAddNote}) => {
             handleAddNote({noteTitle, noteText});
             setNoteText('');
             setNoteTitle('');
+            
+            
         } else {
             // var error = "No note text"
             // document.getElementById('error-message').append(error)

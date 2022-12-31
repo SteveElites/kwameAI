@@ -9,6 +9,7 @@ const NoteList = ({ notes, handleAddNote, handleDeleteNote, handleEditNote }) =>
             <Note id={note.id} title={note.title} text={note.text} 
                 date= {note.date}
                 note={note}
+                notes = {notes}
                 handleDeleteNote= {handleDeleteNote}
                 onEdit={handleEditNote}
                 
