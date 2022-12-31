@@ -65,15 +65,6 @@ const AddNote = ({handleAddNote}) => {
 
     // const body = {noteTitle, noteText };
 
-    const fetchNotes = async () => {
-        try {
-          const response = await fetch("http://localhost:5000/");
-          const data = await response.json();
-          console.log(data);
-        } catch (err) {
-          console.error(err.message);
-        }
-      };
 
 
        // SAVE TO DATABASE 
@@ -81,12 +72,15 @@ const AddNote = ({handleAddNote}) => {
         const created = date.toISOString().substring(0, 10);
         e.preventDefault();
 
-        const existingNotes = await fetchNotes(); // fetch existing notes with their titles
-        const titleInUse = existingNotes.find(n => n.title === noteTitle);
-        if (titleInUse) {
-            // Title is already in use, return error message
-            alert('title must be unique')
+        const response = await fetch("http://localhost:5000");
+        const existingNotes = await response.json();
+
+        const isTitleUnique = !existingNotes.find(note => note.title === noteTitle);
+        if (!isTitleUnique) {
+        // Display an error message if the title is not unique
+            alert("title must be unique")
         } else {
+
 
             try {
             // console.log(noteText, noteTitle);
@@ -113,6 +107,7 @@ const AddNote = ({handleAddNote}) => {
             console.error(err.message)
         }
         }
+        
 
 
         

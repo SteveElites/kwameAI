@@ -23,7 +23,7 @@ const NoteList = ({ notes, handleAddNote, handleDeleteNote, handleEditNote }) =>
     getNotes();
   }, []);
 
-  console.log(list)
+  // console.log(list)
   return (
     <div className="notes-list">  
         {/* {notes.map((note)=> 

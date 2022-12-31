@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Note = ({ note, notes, list, onEdit, handleDeleteNote }) => {
+const Note = ({ note, onEdit, handleDeleteNote }) => {
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(note.title);
   const [text, setText] = useState(note.text);
@@ -30,37 +30,43 @@ const Note = ({ note, notes, list, onEdit, handleDeleteNote }) => {
   const handleSaveClick = async(e) => {
     e.preventDefault();
 
-    const isTitleUnique = list.every(otherNote => otherNote.title !== title || otherNote.id === note.id);
-    if (!isTitleUnique) {
-      setTitleError('Title must be unique');
-    //   console.log(note.id);
-      return;
-    }
+    const t_response = await fetch("http://localhost:5000");
+        const existingNotes = await t_response.json();
 
-    try {
-      // const body = { id, note_id, title, text, date, updated };
-      const response = await fetch(`http://localhost:5000/${note.note_id}`, 
-      {
-          method: "PUT",
-          headers: { "Content-Type": "application/json"},
-          body: JSON.stringify({
-            note_id: note.note_id,
-            title: title,
-            text: text,
-            date: note.date,
-            updated: updatedDate.toISOString().substring(0, 10)
-          })
-      })
+        const isTitleUnique = !existingNotes.find(note => note.title === title);
+        if (!isTitleUnique) {
+        // Display an error message if the title is not unique
+            alert("title must be unique")
+        } else {
+              try {
+                    // const body = { id, note_id, title, text, date, updated };
+                    const response = await fetch(`http://localhost:5000/${note.note_id}`, 
+                    {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json"},
+                        body: JSON.stringify({
+                          note_id: note.note_id,
+                          title: title,
+                          text: text,
+                          date: note.date,
+                          updated: updatedDate.toISOString().substring(0, 10)
+                        })
+                    })
 
-      window.location.reload(true);
-      console.log(response)
-    } catch (err) {
-      console.error(err.message)
-    }
+                    window.location.reload(true);
+                    console.log(response)
+                  } catch (err) {
+                    console.error(err.message)
+                  }
 
-    const updatedNote = { ...note, title, text, updated: Date.now() };
-    onEdit(updatedNote);
-    setEditing(false);
+                  const updatedNote = { ...note, title, text, updated: Date.now() };
+                  onEdit(updatedNote);
+                  setEditing(false);
+
+
+        }
+
+    
 
   };
   
